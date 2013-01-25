@@ -110,18 +110,24 @@ base64_decode(char *in, int inlen, unsigned char *out)
 
 		switch (s) {
 		case 0:
-			out[j++] = c << 2;	
+			out[j] = c << 2;
 			continue;
 		case 1:
-			out[j-1] += (c >> 4) & 0x3;
-			out[j++] =  (c & 0xF) << 4;
+			out[j++] += (c >> 4) & 0x3;
+
+			/* if not last char with padding */
+			if (i < (inlen - 3) || in[inlen - 2] != '=')
+				out[j] = (c & 0xF) << 4; 
 			continue;
 		case 2:
-			out[j-1] += (c >> 2) & 0xF;
-			out[j++] =  (c & 0x3) << 6;
+			out[j++] += (c >> 2) & 0xF;
+
+			/* if not last char with padding */
+			if (i < (inlen - 2) || in[inlen - 1] != '=')
+				out[j] =  (c & 0x3) << 6;
 			continue;
 		case 3:
-			out[j-1] += c;
+			out[j++] += c;
 		}
 	}
 

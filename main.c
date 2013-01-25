@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "base64.h"
@@ -9,13 +10,8 @@ main(void)
 	unsigned char input[] = "pleasure.";
 	char output[13];
 	bzero(output, sizeof(output));
-
 	base64_encode(input, sizeof(input) - 1, output);
-	printf("%s: %s\n", input, output);
-
-	bzero(input, sizeof(input));
-	base64_decode(output, sizeof(output) - 1, input);
-	printf("%s: %s\n", output, input);
+	base64_decode(output, sizeof(output) - 1, decode);
 
 	return 0;
 }
