@@ -8,6 +8,7 @@ int
 main(void)
 {
 	unsigned char input[] = "pleasure.";
+	unsigned char decode[13];
 	char output[13];
 	bzero(output, sizeof(output));
 	base64_encode(input, sizeof(input) - 1, output);

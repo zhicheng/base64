@@ -1,12 +1,11 @@
 /* This is a public domain base64 implementation written by WEI Zhicheng. */
 
 #include <stdio.h>
-#include <string.h>
 
 #include "base64.h"
 
 /* BASE 64 encode table */
-static char base64en[] = {
+static const char base64en[] = {
 	'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
 	'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
 	'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
@@ -23,7 +22,7 @@ static char base64en[] = {
 #define BASE64DE_FIRST	'+'
 #define BASE64DE_LAST	'z'
 /* ASCII order for BASE 64 decode, -1 in unused character */
-static signed char base64de[] = {
+static const signed char base64de[] = {
 	/* '+', ',', '-', '.', '/', '0', '1', '2', */ 
 	    62,  -1,  -1,  -1,  63,  52,  53,  54,
 
@@ -56,9 +55,9 @@ static signed char base64de[] = {
 };
 
 int
-base64_encode(unsigned char *in, int inlen, char *out)
+base64_encode(const unsigned char *in, unsigned int inlen, char *out)
 {
-	int i, j;
+	unsigned int i, j;
 
 	for (i = j = 0; i < inlen; i++) {
 		int s = i % 3; 			/* from 6/gcd(6, 8) */
@@ -93,9 +92,9 @@ base64_encode(unsigned char *in, int inlen, char *out)
 }
 
 int
-base64_decode(char *in, int inlen, unsigned char *out)
+base64_decode(const char *in, unsigned int inlen, unsigned char *out)
 {
-	int i, j;
+	unsigned int i, j;
 
 	for (i = j = 0; i < inlen; i++) {
 		int c;
@@ -110,24 +109,24 @@ base64_decode(char *in, int inlen, unsigned char *out)
 
 		switch (s) {
 		case 0:
-			out[j] = c << 2;
+			out[j] = ((unsigned int)c << 2) & 0xFF;
 			continue;
 		case 1:
-			out[j++] += (c >> 4) & 0x3;
+			out[j++] += ((unsigned int)c >> 4) & 0x3;
 
 			/* if not last char with padding */
 			if (i < (inlen - 3) || in[inlen - 2] != '=')
-				out[j] = (c & 0xF) << 4; 
+				out[j] = ((unsigned int)c & 0xF) << 4; 
 			continue;
 		case 2:
-			out[j++] += (c >> 2) & 0xF;
+			out[j++] += ((unsigned int)c >> 2) & 0xF;
 
 			/* if not last char with padding */
 			if (i < (inlen - 2) || in[inlen - 1] != '=')
-				out[j] =  (c & 0x3) << 6;
+				out[j] =  ((unsigned int)c & 0x3) << 6;
 			continue;
 		case 3:
-			out[j++] += c;
+			out[j++] += (unsigned char)c;
 		}
 	}
 
