@@ -88,6 +88,8 @@ base64_encode(const unsigned char *in, unsigned int inlen, char *out)
 		out[j++] = BASE64_PAD;
 	}
 
+	out[j] = 0;
+
 	return BASE64_OK;
 }
 
