@@ -135,7 +135,7 @@ base64_decode(const char *in, unsigned int inlen, unsigned char *out)
 			return 0;
 		}
 
-		c = base64de[in[i]];
+		c = base64de[(unsigned char)in[i]];
 		if (c == 255) {
 			return 0;
 		}
