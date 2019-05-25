@@ -157,7 +157,6 @@ base64_decode(const char *in, unsigned int inlen, unsigned char *out)
 			break;
 		}
 	}
-	out[j] = '\0';
 
 	return j;
 }
