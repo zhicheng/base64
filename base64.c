@@ -131,7 +131,7 @@ base64_decode(const char *in, unsigned int inlen, unsigned char *out)
 		if (in[i] == BASE64_PAD) {
 			break;
 		}
-		if (in[i] < 0) {
+		if ((in[i] & 0x80) != 0) {
 			return 0;
 		}
 
