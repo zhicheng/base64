@@ -3,6 +3,8 @@
 #include "base64.h"
 
 #define BASE64_PAD '='
+#define BASE64DE_FIRST '+'
+#define BASE64DE_LAST 'z'
 
 /* BASE 64 encode table */
 static const char base64en[] = {
@@ -131,7 +133,7 @@ base64_decode(const char *in, unsigned int inlen, unsigned char *out)
 		if (in[i] == BASE64_PAD) {
 			break;
 		}
-		if (in[i] < 0) {
+		if (in[i] < BASE64DE_FIRST || in[i] > BASE64DE_LAST) {
 			return 0;
 		}
 
